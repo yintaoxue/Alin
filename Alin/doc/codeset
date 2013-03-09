@@ -1,0 +1,21 @@
+
+
+=====
+将参数整理成为Map,将数组参数转为List
+org.apache.solr.handler.dataimport.DataImportHandler
+
+  private Map<String, Object> getParamsMap(SolrParams params) {
+    Iterator<String> names = params.getParameterNamesIterator();
+    Map<String, Object> result = new HashMap<String, Object>();
+    while (names.hasNext()) {
+      String s = names.next();
+      String[] val = params.getParams(s);
+      if (val == null || val.length < 1)
+        continue;
+      if (val.length == 1)
+        result.put(s, val[0]);
+      else
+        result.put(s, Arrays.asList(val));
+    }
+    return result;
+  }
